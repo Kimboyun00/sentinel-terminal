@@ -18,46 +18,60 @@ from rich.text import Text
 
 console = Console()
 
-# Alert levels & theming
-LEVEL_INTEREST = "INTEREST"
-LEVEL_CAUTION = "CAUTION"
-LEVEL_ALERT = "ALERT"
-LEVEL_SEVERE = "SEVERE"
+# 위기경보 단계
+LEVEL_INTEREST = "관심"
+LEVEL_CAUTION = "주의"
+LEVEL_ALERT = "경계"
+LEVEL_SEVERE = "심각"
 
-ALERT_THEMES = {
-    "NORMAL": {"accent": "#1de9b6", "bg": "#050d1f"},
-    "ATTENTION": {"accent": "#2de1fc", "bg": "#0a1b33"},
-    "CAUTION": {"accent": "#f7c948", "bg": "#2b1f04"},
-    "WARNING": {"accent": "#ff9f43", "bg": "#31160a"},
-    "CRISIS": {"accent": "#ff5c5c", "bg": "#260707"},
+THEMES = {
+    LEVEL_INTEREST: {"accent": "#1f6feb", "bg": "#0d2345"},
+    LEVEL_CAUTION: {"accent": "#f6a04d", "bg": "#422b0f"},
+    LEVEL_ALERT: {"accent": "#e67e22", "bg": "#3a220e"},
+    LEVEL_SEVERE: {"accent": "#e74c3c", "bg": "#3a0e0e"},
 }
-
-LEVEL_TOKEN_MAP = {
-    "NORMAL": ["normal", "jeongsang", "default"],
-    "ATTENTION": ["attention", "gwan-sim"],
-    "CAUTION": ["caution", "ju-ui"],
-    "WARNING": ["warning", "gyeong-gye"],
-    "CRISIS": ["crisis", "sim-gak"],
-}
-
-
-def _banner_block(label: str):
-    label = label.upper()
-    side = "=" * (len(label) + 10)
-    return [
-        f"/{side}\\",
-        f"|   {label.center(len(label) + 4)}   |",
-        f"\\{side}/",
-        f"<<< {label} >>>",
-    ]
-
 
 BANNER_EN = {
-    "NORMAL": _banner_block("NORMAL MODE"),
-    "ATTENTION": _banner_block("ATTENTION"),
-    "CAUTION": _banner_block("CAUTION"),
-    "WARNING": _banner_block("WARNING"),
-    "CRISIS": _banner_block("CRISIS"),
+    "NORMAL": [
+        "███╗   ██╗ ██████╗ ██████╗ ███╗   ███╗  █████╗ ██╗     ",
+        "████╗  ██║██╔═══██╗██╔══██╗████╗ ████║ ██╔══██╗██║     ",
+        "██╔██╗ ██║██║   ██║██████╔╝██╔████╔██║ ███████║██║     ",
+        "██║╚██╗██║██║   ██║██╔══██╗██║╚██╔╝██║ ██╔══██║██║     ",
+        "██║ ╚████║╚██████╔╝██║  ██║██║ ╚═╝ ██║ ██║  ██║███████╗",
+        "╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝ ╚═╝  ╚═╝╚══════╝",
+    ],
+    "ATTENTION": [
+        " █████╗ ████████╗████████╗███████╗███╗   ██╗████████╗██╗ █████╗ ███╗   ██╗",
+        "██╔══██╗╚══██╔══╝╚══██╔══╝██╔════╝████╗  ██║╚══██╔══╝██║██╔══██╗████╗  ██║",
+        "███████║   ██║      ██║   █████╗  ██╔██╗ ██║   ██║   ██║██║  ██║██╔██╗ ██║",
+        "██╔══██║   ██║      ██║   ██╔══╝  ██║╚██╗██║   ██║   ██║██║  ██║██║╚██╗██║",
+        "██║  ██║   ██║      ██║   ███████╗██║ ╚████║   ██║   ██║╚█████╔╝██║ ╚████║",
+        "╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚═╝ ╚════╝ ╚═╝  ╚═══╝",
+    ],
+    "CAUTION": [
+        " ██████╗ █████╗ ██╗   ██╗████████╗██╗ ██████╗ ███╗   ██╗",
+        "██╔════╝██╔══██╗██║   ██║╚══██╔══╝██║██╔═══██╗████╗  ██║",
+        "██║     ███████║██║   ██║   ██║   ██║██║   ██║██╔██╗ ██║",
+        "██║     ██╔══██║██║   ██║   ██║   ██║██║   ██║██║╚██╗██║",
+        "╚██████╗██║  ██║╚██████╔╝   ██║   ██║╚██████╔╝██║ ╚████║",
+        " ╚═════╝╚═╝  ╚═╝ ╚═════╝    ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝",
+    ],
+    "WARNING": [
+        "██╗    ██╗ █████╗ ██████╗ ███╗   ██╗██╗███╗   ██╗ ██████╗ ",
+        "██║    ██║██╔══██╗██╔══██╗████╗  ██║██║████╗  ██║██╔════╝ ",
+        "██║ █╗ ██║███████║██████╔╝██╔██╗ ██║██║██╔██╗ ██║██║  ███╗",
+        "██║███╗██║██╔══██║██╔══██╗██║╚██╗██║██║██║╚██╗██║██║   ██║",
+        "╚███╔███╔╝██║  ██║██║  ██║██║ ╚████║██║██║ ╚████║╚██████╔╝",
+        " ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝╚═╝  ╚═══╝ ╚═════╝ ",
+    ],
+    "CRISIS": [
+        " ██████╗██████╗ ██╗███████╗██╗███████╗",
+        "██╔════╝██╔══██╗██║██╔════╝██║██╔════╝",
+        "██║     ██████╔╝██║███████╗██║███████╗",
+        "██║     ██╔══██╗██║╚════██║██║╚════██║",
+        "╚██████╗██║  ██║██║███████║██║███████║",
+        " ╚═════╝╚═╝  ╚═╝╚═╝╚══════╝╚═╝╚══════╝",
+    ],
 }
 
 BANNER_KO = {
@@ -68,30 +82,51 @@ BANNER_KO = {
     "CRISIS": "Crisis",
 }
 
-# Branding (ASCII-only for sharp typographic edges)
+NOTICE_IT = [
+    "███████╗ ██████╗ ██████╗     █████╗ ███╗   ██╗██╗   ██╗     ██╗ ████████╗     ██████╗ ██████╗      ██╗      █████╗ ██████╗ ████████╗ ██████╗ ██████╗            ██████╗ ███████╗██╗      █████╗ ████████╗███████╗██████╗       █████╗ ███████╗███████╗██╗███████╗████████╗ █████╗ ███╗   ██╗ ██████╗███████╗         ██████╗ ██╗     ███████╗ █████╗ ███████╗███████╗      ██████╗  ██████╗     ████████╗ ██████╗     ██╗████████╗     ███████╗███████╗██████╗ ██╗   ██╗██╗ ██████╗███████╗███████╗      ██████╗ ███████╗███████╗██╗ ██████╗███████╗     ██╗  ██████╗  ██████╗  ██████╗ ███╗   ███╗    ██████╗    ██╗ ███████╗  ██╗ ",
+    "██╔════╝██╔═══██╗██╔══██╗   ██╔══██╗████╗  ██║╚██╗ ██╔╝     ██║ ╚══██╔══╝    ██╔═══██╗██╔══██╗     ██║     ██╔══██╗██╔══██╗╚══██╔══╝██╔═══██╗██╔══██╗           ██╔══██╗██╔════╝██║     ██╔══██╗╚══██╔══╝██╔════╝██╔══██╗     ██╔══██╗██╔════╝██╔════╝██║██╔════╝╚══██╔══╝██╔══██╗████╗  ██║██╔════╝██╔════╝         ██╔══██╗██║     ██╔════╝██╔══██╗██╔════╝██╔════╝     ██╔════╝ ██╔═══██╗    ╚══██╔══╝██╔═══██╗    ██║╚══██╔══╝     ██╔════╝██╔════╝██╔══██╗██║   ██║██║██╔════╝██╔════╝██╔════╝     ██╔═══██╗██╔════╝██╔════╝██║██╔════╝██╔════╝    ██╔╝  ██╔══██╗██╔═══██╗██╔═══██╗████╗ ████║    ╚════██╗ ████║ ██╔════╝  ╚██╗",
+    "█████╗  ██║   ██║██████╔╝   ███████║██╔██╗ ██║ ╚████╔╝      ██║    ██║       ██║   ██║██████╔╝     ██║     ███████║██████╔╝   ██║   ██║   ██║██████╔╝  ██████╗  ██████╔╝█████╗  ██║     ███████║   ██║   █████╗  ██║  ██║     ███████║███████╗███████╗██║███████╗   ██║   ███████║██╔██╗ ██║██║     █████╗           ██████╔╝██║     █████╗  ███████║███████╗█████╗       ██║  ███╗██║   ██║       ██║   ██║   ██║    ██║   ██║        ███████╗█████╗  ██████╔╝██║   ██║██║██║     █████╗  ███████╗     ██║   ██║█████╗  █████╗  ██║██║     █████╗      ██║   ██████╔╝██║   ██║██║   ██║██╔████╔██║     █████╔╝   ██║ ███████╗   ██║",
+    "██╔══╝  ██║   ██║██╔══██╗   ██╔══██║██║╚██╗██║  ╚██╔╝       ██║    ██║       ██║   ██║██╔══██╗     ██║     ██╔══██║██╔══██╗   ██║   ██║   ██║██╔═══╝   ╚═════╝  ██╔══██╗██╔══╝  ██║     ██╔══██║   ██║   ██╔══╝  ██║  ██║     ██╔══██║╚════██║╚════██║██║╚════██║   ██║   ██╔══██║██║╚██╗██║██║     ██╔══╝           ██╔═══╝ ██║     ██╔══╝  ██╔══██║╚════██║██╔══╝       ██║   ██║██║   ██║       ██║   ██║   ██║    ██║   ██║        ╚════██║██╔══╝  ██╔══██╗╚██╗ ██╔╝██║██║     ██╔══╝  ╚════██║     ██║   ██║██╔══╝  ██╔══╝  ██║██║     ██╔══╝      ██║   ██╔══██╗██║   ██║██║   ██║██║╚██╔╝██║    ██╔═══╝    ██║ ╚════██║   ██║",
+    "██║     ╚██████╔╝██║  ██║   ██║  ██║██║ ╚████║   ██║        ██║    ██║       ╚██████╔╝██║  ██║     ███████╗██║  ██║██████╔╝   ██║   ╚██████╔╝██║                ██║  ██║███████╗███████╗██║  ██║   ██║   ███████╗██████╔╝     ██║  ██║███████║███████║██║███████║   ██║   ██║  ██║██║ ╚████║╚██████╗███████╗ ██╗     ██║     ███████╗███████╗██║  ██║███████║███████╗     ╚██████╔╝╚██████╔╝       ██║   ╚██████╔╝    ██║   ██║        ███████║███████╗██║  ██║ ╚████╔╝ ██║╚██████╗███████╗███████║     ╚██████╔╝██║     ██║     ██║╚██████╗███████╗     ██╗  ██║  ██║╚██████╔╝╚██████╔╝██║ ╚═╝ ██║    ███████╗   ██║ ███████║  ██╔╝",
+    "╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝        ╚═╝    ╚═╝        ╚═════╝ ╚═╝  ╚═╝     ╚══════╝╚═╝  ╚═╝╚═════╝    ╚═╝    ╚═════╝ ╚═╝                ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═════╝      ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝╚══════╝  █║     ╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝      ╚═════╝  ╚═════╝        ╚═╝    ╚═════╝     ╚═╝   ╚═╝        ╚══════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚═╝ ╚═════╝╚══════╝╚══════╝      ╚═════╝ ╚═╝     ╚═╝     ╚═╝ ╚═════╝╚══════╝     ╚═╝  ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝     ╚═╝    ╚══════╝   ╚═╝ ╚══════╝  ╚═╝ ",
+]
+
+ALERT_THEMES = {
+    "NORMAL": {"accent": "#00B15E", "bg": "#0d2345"},
+    "ATTENTION": {"accent": "#1f6feb", "bg": "#0d2345"},
+    "CAUTION": {"accent": "#f6a04d", "bg": "#422b0f"},
+    "WARNING": {"accent": "#e67e22", "bg": "#3a220e"},
+    "CRISIS": {"accent": "#e74c3c", "bg": "#3a0e0e"},
+}
+
+LEVEL_TOKEN_MAP = {
+    "NORMAL": ["normal", "정상"],
+    "ATTENTION": ["attention", "관심"],
+    "CAUTION": ["caution", "주의"],
+    "WARNING": ["warning", "경계"],
+    "CRISIS": ["crisis", "심각"],
+}
+
+
+# 대형 로고
 LOGO_MAIN = [
-    " __  __    ___    _______      _   _ ",
-    "|  \\/  |  / _ \\  |__   __|    | \\ | |",
-    "| |\\/| | | | | |    | | ___   |  \\| |",
-    "| |  | | | |_| |    | ||_  |  | |\\  |",
-    "|_|  |_|  \\___/     |_|  |_|  |_| \\_|",
-    "             DATA UNI 2              ",
+    "??????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????",
+    "????????????? ????????? ???????????????????????    ????? ???????????  ???????????????????????  ??????????? ??",
+    "????????????????????????????????????????????????????  ????? ????????????  ???????????????????????  ???????????? ??",
+    "??????? ?????????????????  ?????  ????????????   ????? ???????????????????????   ?????      ????????????",
+    "??????? ?????????????????  ?????  ????????????   ????? ????????????????????????   ?????     ??????????? ??",
+    "??????????????????? ?????  ?????  ????? ?????  ???????????????????????????????  ?????     ???????????? ??",
+    "?????????????????? ?????  ?????  ????? ?????   ????????? ????? ????????????   ?????     ???????????? ??",
+    "??????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????",
 ]
 
 LOGO_SUB = [
-    " SECURITY OPERATIONS CENTER",
-    " REAL-TIME DEFENSE - CAMPUS VISIBILITY",
+    "  _____                     _                      ",
+    " & SECURITY OPERATIONS CENTER                      ",
+    "  MONITORING  |  RESPONSE  |  INSIGHT              ",
 ]
 
-NOTICE_IT = [
-    "Monitoring: campus network is stable.",
-    "Security Ops: automated vuln scan running.",
-    "Data flow: dashboards refreshing live.",
-    "DR line-check complete - standby ready.",
-    "Data Uni 2 | Security Operations Center",
-]
 
-# Animated ASCII weather icons (ASCII-only)
 WEATHER_FRAMES = {
     "clear": [
         [
@@ -185,7 +220,7 @@ WEATHER_FRAMES = {
             "     .-.        ",
             "    (   ).      ",
             "   (___(__)     ",
-            "    \\ /\\      ",
+            "    \\\\ /\\\\      ",
             "   '  V  '      ",
         ],
     ],
@@ -207,9 +242,8 @@ WEATHER_FRAMES = {
     ],
 }
 
-
 def condition_key(desc: str) -> str:
-    low = (desc or '').lower()
+    low = (desc or "").lower()
     if any(k in low for k in ("thunder", "storm", "lightning")):
         return "storm"
     if any(k in low for k in ("snow", "ice")):
@@ -224,11 +258,38 @@ def condition_key(desc: str) -> str:
         return "partly"
     return "clear"
 
-
 def weather_icon(desc: str, frame: int):
     key = condition_key(desc)
     frames = WEATHER_FRAMES.get(key, WEATHER_FRAMES["clear"])
     return frames[frame % len(frames)]
+
+def build_weather_card(
+    desc: str,
+    temp: str,
+    humidity: str,
+    title: Optional[str] = None,
+    accent: str = "cyan",
+    frame: int = 0,
+    updated: Optional[str] = None,
+):
+    art = "\n".join(weather_icon(desc, frame))
+    body = Table.grid(expand=True, padding=(0, 1))
+    body.add_row(Align.center(Text(art, style="bold white")))
+
+    details = Table.grid(padding=(0, 1))
+    details.add_column(style=f"bold {accent}", no_wrap=True)
+    details.add_column(style="white")
+    details.add_row(Text("Condition", style=f"bold {accent}"), desc)
+    details.add_row(Text("Temp", style=f"bold {accent}"), temp)
+    details.add_row(Text("Humidity", style=f"bold {accent}"), humidity)
+    if updated:
+        details.add_row(Text("Updated", style=accent), updated)
+    body.add_row(details)
+
+    border_color = accent or "white"
+    title_text = title if title is not None else "Weather"
+    return Panel(body, title=title_text, border_style=border_color, padding=(0, 1))
+
 
 class WeatherService:
     """Background updater for weather."""
@@ -243,7 +304,8 @@ class WeatherService:
         self.updated = datetime.now().strftime("%Y-%m-%d %H:%M")
         self.running = True
         self._thread = None
-        self.forecast = []  # ?ㅼ쟾/?ㅽ썑 ?덈낫 ?ㅻ깄??
+        self.forecast = []  # 오전/오후 예보 스냅샷
+
     def _update_once(self):
         headers = {"User-Agent": "Mozilla/5.0 (compatible; CodexBot/1.0)"}
         res = requests.get(f"https://wttr.in/{self.city}?format=j1", timeout=5, headers=headers)
@@ -410,11 +472,10 @@ def fetch_notices_top3():
         return []
 
 def make_forecast_panel(theme, frame: int):
-    """Mini forecast stack to keep the weather area active."""
     forecast = fetch_weather_sejong().get("forecast", [])
 
     if not forecast:
-        return Panel(Text("No forecast available", style="bright_black"), border_style="grey50")
+        return Panel(Text("No forecast", style="bright_black"), border_style="grey50")
 
     grid = Table.grid(expand=True)
     grid.add_column(ratio=1)
@@ -462,35 +523,6 @@ def fetch_koreatimes_news(limit: int = 10, cache_ttl: int = 300):
     except Exception:
         return news_cache
 
-def build_weather_card(
-    desc: str,
-    temp: str,
-    humidity: str,
-    title: Optional[str] = None,
-    accent: str = "cyan",
-    frame: int = 0,
-    updated: Optional[str] = None,
-):
-    """Weather card with animated ASCII icon and compact metrics."""
-    art = "\n".join(weather_icon(desc, frame))
-    body = Table.grid(expand=True, padding=(0, 1))
-    body.add_row(Align.center(Text(art, style="bold white")))
-
-    details = Table.grid(padding=(0, 1))
-    details.add_column(style=f"bold {accent}", no_wrap=True)
-    details.add_column(style="white")
-    details.add_row(Text("Condition", style=f"bold {accent}"), desc)
-    details.add_row(Text("Temp", style=f"bold {accent}"), temp)
-    details.add_row(Text("Humidity", style=f"bold {accent}"), humidity)
-    if updated:
-        details.add_row(Text("Updated", style=accent), updated)
-    body.add_row(details)
-
-    border_color = accent or "white"
-    title_text = title if title is not None else "Weather"
-    return Panel(body, title=title_text, border_style=border_color, padding=(0, 1))
-
-
 def normalize_alert_level(level: str) -> str:
     """Map scraped status text to a normalized level key."""
     text = (level or "").strip().lower()
@@ -513,33 +545,33 @@ def _trim_line(text: str, max_width: int) -> str:
         return ""
     if len(text) <= max_width:
         return text
-    return text[: max(0, max_width - 3)] + "..."
+    return text[: max(0, max_width - 1)] + "…"
+
 
 def render_alert_bar(level_key: str, theme, frame: int):
     """4-step bar that fills toward the target fraction with a short ramp animation."""
     targets = {"NORMAL": 0.0, "ATTENTION": 0.25, "CAUTION": 0.5, "WARNING": 0.75, "CRISIS": 1.0}
     target_fraction = targets.get(level_key, 0.0)
-    segment_len = 14
+    segment_len = 16
     total_units = segment_len * 4
-    ramp_period = 8  # faster fill; completes then loops back
+    ramp_period = 10  # faster fill; completes then loops back
     ramp = (max(frame, 0) % ramp_period) / ramp_period
     filled_units = int(total_units * target_fraction * ramp + 0.5)
 
     lines = []
-    for _ in range(2):
+    for _ in range(2):  # thickness: two stacked rows
         bar = Text()
         remaining = filled_units
         for _ in range(4):
             fill_here = max(0, min(segment_len, remaining))
             empty_here = segment_len - fill_here
             if fill_here:
-                bar.append("#" * fill_here, style=theme["accent"])
+                bar.append("█" * fill_here, style=theme["accent"])
             if empty_here:
-                bar.append("-" * empty_here, style="grey23")
+                bar.append("░" * empty_here, style="grey23")
             remaining -= fill_here
         lines.append(bar)
     return Align.center(Group(*lines))
-
 
 
 def render_alert_banner(level_key: str, theme):
@@ -565,43 +597,24 @@ def make_alert_widget(alert, theme, width: int, frame: int):
     body.add_row(Align.center(Text("  ")))
 
     title_text = Text("NCSC Cybercrisis Alert", style=f"bold {theme['accent']}")
-    return Panel(body, border_style=theme["accent"], title=title_text, padding=(0, 1), box=box.SQUARE)
+    return Panel(body, border_style=theme["accent"], title=title_text, padding=(0, 1))
 
 
 def make_header(alert, theme, frame: int):
     logo_main = Text("\n".join(LOGO_MAIN), style=f"bold {theme['accent']}")
     logo_sub = Text("\n".join(LOGO_SUB), style="bright_white")
 
-    header_width = console.size.width
-    right_width = max(50, min(int(header_width * 0.4), 80))
-
     left_stack = Group(Align.left(logo_main), Align.left(logo_sub))
-    left_panel = Panel(left_stack, border_style=theme["accent"], padding=(0, 2), box=box.SQUARE)
-
-    right_widget = make_alert_widget(alert, theme, right_width - 4, frame)
+    left_panel = Panel(left_stack, border_style="", padding=(0, 2), box=box.MINIMAL)
 
     grid = Table.grid(expand=True)
-    grid.add_column(ratio=2.2)
-    grid.add_column(ratio=2, width=right_width)
-    grid.add_row(left_panel, right_widget)
+    grid.add_column(ratio=1)
+    grid.add_row(left_panel)
 
-    return Panel(grid, box=box.SQUARE, padding=(1, 2), border_style=theme["accent"], style=f"on {theme['bg']}")
-
-
-def make_clock_panel(theme):
-    now = datetime.now()
-    time_line = now.strftime("%H:%M:%S")
-    date_line = now.strftime("%Y-%m-%d (%a)")
-
-    clock_table = Table.grid(expand=True, padding=(0, 1))
-    clock_table.add_row(Text(time_line, style=f"bold {theme['accent']}"))
-    clock_table.add_row(Text(date_line, style="white"))
-    clock_table.add_row(Text("Local Campus Time", style="grey50"))
-
-    return Panel(clock_table, title="Clock", border_style=theme["accent"], box=box.SQUARE, padding=(0, 1))
+    return Panel(grid, box=box.HEAVY, padding=(1, 1), border_style=theme["accent"], style=f"on {theme['bg']}")
 
 
-def make_misc_table(theme, frame: int):
+def make_misc_table(alert, theme, frame: int):
     weather = fetch_weather_sejong()
     current_card = build_weather_card(
         weather.get("desc", "N/A"),
@@ -612,22 +625,21 @@ def make_misc_table(theme, frame: int):
         updated=weather.get("updated"),
     )
 
-    forecast_panel = make_forecast_panel(theme, frame)
     weather_stack = Table.grid(expand=True)
     weather_stack.add_row(current_card)
-    weather_stack.add_row(forecast_panel)
+    weather_stack.add_row(make_forecast_panel(theme, frame))
     weather_panel = Panel(weather_stack, title="Sejong Weather", border_style=theme["accent"], box=box.SQUARE, padding=(0, 1))
 
     news_items = fetch_koreatimes_news()
     news_left = Table.grid(expand=True)
 
     def news_panel(item, idx, total):
-        box_inner = Table.grid(padding=(0, 1), expand=True)
-        box_inner.add_row(Align.left(Text(item.get("headline", ""), style=f"bold {theme['accent']}")))
-        box_inner.add_row(Align.left(Text("  ")))
+        box = Table.grid(padding=(0, 1), expand=True)
+        box.add_row(Align.left(Text(item.get("headline", ""), style=f"bold {theme['accent']}")))
+        box.add_row(Align.left(Text("  ")))
         lead = textwrap.shorten(item.get("lead", ""), width=300, placeholder=" ...")
-        box_inner.add_row(Text(lead, style="white"))
-        return Panel(box_inner, title="The Korea Times - Tech-Science NEWS", border_style=theme["accent"], box=box.SQUARE)
+        box.add_row(Text(lead, style="white"))
+        return Panel(box, title=f"The Korea Times - Tech·Science NEWS", border_style=theme["accent"], box=box.SQUARE)
 
     if news_items:
         total = len(news_items)
@@ -638,16 +650,19 @@ def make_misc_table(theme, frame: int):
         if second:
             news_left.add_row(news_panel(second, ((base + 1) % total) + 1, total))
     else:
-        news_left.add_row(Panel(Text("Failed to load news.", style="bright_black"), title="The Korea Times - Tech-Science", border_style="grey50", box=box.SQUARE))
+        news_left.add_row(Panel(Text("Failed to load news.", style="bright_black"), title="The Korea Times - Tech·Science", border_style="grey50"))
 
-    right_column = Table.grid(expand=True)
-    right_column.add_row(make_clock_panel(theme))
-    right_column.add_row(weather_panel)
+    alert_width = max(50, int(console.size.width * 0.35))
+    alert_panel = make_alert_widget(alert, theme, alert_width, frame)
+
+    right_stack = Table.grid(expand=True)
+    right_stack.add_row(alert_panel)
+    right_stack.add_row(weather_panel)
 
     grid = Table.grid(expand=True)
     grid.add_column(ratio=3)
     grid.add_column(ratio=1)
-    grid.add_row(news_left, right_column)
+    grid.add_row(news_left, right_stack)
 
     return Panel(grid, border_style=theme["accent"], box=box.SQUARE, padding=(1, 1))
 
@@ -655,7 +670,7 @@ def make_misc_table(theme, frame: int):
 class MarqueeFooter:
     """Right-to-left scrolling marquee for footer."""
 
-    def __init__(self, lines, fps: int = 14, step: int = 2):
+    def __init__(self, lines, fps: int = 16, step: int = 2):
         self.lines = lines
         self.fps = fps
         self.step = step
@@ -684,7 +699,7 @@ class MarqueeFooter:
         return "\n".join(rendered[:height])
 
 
-footer_matrix = MarqueeFooter(NOTICE_IT, fps=14, step=2)
+footer_matrix = MarqueeFooter(NOTICE_IT, fps=16, step=2)
 
 
 def build_layout(alert, frame: int):
@@ -699,7 +714,7 @@ def build_layout(alert, frame: int):
     layout["header"].size = header_size
     layout["header"].update(make_header(alert, theme, frame))
 
-    body_renderable = make_misc_table(theme, frame)
+    body_renderable = make_misc_table(alert, theme, frame)
 
     layout["body"].size = fixed_body_height
     layout["body"].update(body_renderable)
